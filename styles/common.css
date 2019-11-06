@@ -1,0 +1,17 @@
+.simple-datatable-wrapper 
+{
+    font-size: 85%; 
+}
+
+.clickable 
+{
+    cursor: pointer;
+}
+
+.noresize
+{
+    resize: none; 
+}
+.pointer {
+    cursor: pointer !important; 
+}
