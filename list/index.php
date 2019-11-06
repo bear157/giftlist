@@ -47,6 +47,46 @@ $list_class->setConn($conn);
             </tbody>
         </table>
     </div>
+
+    <hr>
+
+    <h3>Your Friend's Gift List</h3>
+    <div class="simple-datatable-wrapper mt-2">
+        <table class="table simple-datatable table-sm table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th>Title</th>
+                    <th>Number of Gifts</th>
+                    <th>Created date</th>
+                    
+                </tr>
+            </thead>
+            <tbody>               
+                <?php 
+                $res = $list_class->getUserSharingList($acctid); 
+                while($row = $res->fetch(PDO::FETCH_ASSOC)) 
+                {
+                    $list_id = $row["list_id"]; 
+                    $title = $row["title"]; 
+                    $created_date = $row["created_date"]; 
+                    $count_gift = $row["count_gift"]; 
+
+                ?>
+
+                <tr class="clickable" onclick="window.location='view.php?list_id=<?= $list_id; ?>'" data-toggle="tooltip" title="Click to view gift list.">
+                    <td><?= $title; ?></td>
+                    <td><?= $count_gift; ?></td>
+                    <td><?= $created_date; ?></td>
+                </tr>
+
+                <?php 
+                }//=== end while loop ===//
+                ?>
+            </tbody>
+        </table>
+    </div>
+
+
 </div>
 
 

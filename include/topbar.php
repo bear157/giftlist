@@ -52,7 +52,7 @@ if(isset($_SESSION["login_error"]))
             echo '<div class="alert alert-danger alert-dismissible"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>Login failed!</strong> Email or password is invalid. </div>';
             break;
 
-        default: 
+        case 2: 
             echo "<div class='alert alert-warning alert-dismissible'><button type='button' class='close' data-dismiss='alert'>&times;</button><strong>Please login first.</strong> </div>";
             break; 
     }

@@ -22,8 +22,17 @@ else
         die;
     }
 
+    $list_class->checkUserAccess($acctid, $list_id); 
+
+
+    $is_owner = true;
+
     $list_info = $list_class->getSingleGiftList($list_id); 
     $list_title = $list_info["title"]; 
+    $list_owner = $list_info["created_by"]; 
+
+    if($list_owner != $acctid)
+        $is_owner = false;
 }
 
 
@@ -37,10 +46,17 @@ include '../include/topbar.php';
 
     <div class="d-flex">
         <a class="btn btn-sm btn-danger mr-2" href="index.php">Back</a>
+        <?php 
+        if($is_owner)
+        {
+        ?>
         <button class="btn btn-sm btn-info mr-2 active" type="button" data-toggle="tab" data-target="#tab_view_list" onclick="$(this).siblings('[data-toggle=\'tab\']').removeClass('active');">View list</button>
         <button class="btn btn-sm btn-primary mr-2" type="button" data-toggle="tab" data-target="#tab_add_item" onclick="$(this).siblings('[data-toggle=\'tab\']').removeClass('active');">Add item</button>
-        <button class="btn btn-sm btn-warning mr-2" type="button">Delete list</button>
+        <button class="btn btn-sm btn-warning mr-2" type="button" onclick="deleteList('<?= $list_id; ?>')">Delete list</button>
         <button class="btn btn-sm btn-secondary mr-2" type="button" data-toggle="tab" data-target="#tab_privacy" onclick="$(this).siblings('[data-toggle=\'tab\']').removeClass('active');">Set privacy</button>
+        <?php
+        } // end if
+        ?>
         <button class="btn btn-sm border mr-2" type="button" onclick="window.location.reload();">Refresh</button>
     </div>
 
@@ -50,15 +66,21 @@ include '../include/topbar.php';
         <div class="tab-pane active" id="tab_view_list">
             <?php include 'all_gift.php'; ?>
         </div>
+        <?php 
+        if($is_owner)
+        {
+        ?>
         <div class="tab-pane fade" id="tab_add_item">
             <?php include 'new_gift_form.php'; ?>
         </div>
         <div class="tab-pane fade" id="tab_privacy">
-            <?= password_hash("123", PASSWORD_DEFAULT); ?>
+            <?php include 'privacy_page.php'; ?>
+        <?php
+        } // end if
+        ?>
         </div>
     </div>
 
-    
 </div>
 
 
@@ -103,6 +125,23 @@ include '../include/topbar.php';
         else
             this_input.val(qty);
     }
+
+    function deleteList(list_id) 
+    {
+        if(confirm("Delete gift list?"))
+        {
+            $.ajax({
+                method: "POST", 
+                url: "ajax_delete_list.php", 
+                data: {list_id: list_id}, 
+                success: function(){
+                    window.location = "index.php"; 
+                }
+            });
+        }
+       
+    }
+
 </script>
 
 

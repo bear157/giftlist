@@ -10,13 +10,42 @@ public function setConn($conn)
     $this->conn = $conn; 
 }
 
+public function checkUserAccess($usr_id, $list_id) 
+{
+    $sql = $this->conn->prepare("SELECT * FROM tbl_list_sharing list WHERE list.list_id=:list_id AND list.usr_id=:usr_id");
+    $sql->execute([
+        "list_id" => $list_id,
+        "usr_id" => $usr_id
+    ]);
+    if($sql->rowCount()==0) 
+    {
+        header("Location: index.php");
+        die;
+    }
+
+}
+
 public function getUserGiftList($usr_id) 
 {
     $sql = $this->conn->prepare("
         SELECT *, 
             (SELECT COUNT(gift_id) FROM tbl_gift gift WHERE gift.list_id=list.list_id) as count_gift 
         FROM tbl_gift_list list 
-        WHERE list.created_by=:usr_id"); 
+        WHERE list.created_by=:usr_id AND list.status_id=1"); 
+    $sql->execute([
+        "usr_id" => $usr_id
+    ]);
+    return $sql;
+}
+
+public function getUserSharingList($usr_id) 
+{
+    $sql = $this->conn->prepare("
+        SELECT *, 
+            (SELECT COUNT(gift_id) FROM tbl_gift gift WHERE gift.list_id=list.list_id) as count_gift 
+        FROM tbl_gift_list list 
+        INNER JOIN tbl_list_sharing share ON share.list_id=list.list_id
+        WHERE share.usr_id=:usr_id AND list.status_id=1"); 
     $sql->execute([
         "usr_id" => $usr_id
     ]);

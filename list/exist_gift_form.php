@@ -1,9 +1,17 @@
 <form method="POST" action="update_gift.php" enctype="multipart/form-data">
+    <?php
+    if($is_owner)
+    {
+    ?>
     <div class="d-flex">
         <button class="btn btn-success btn-sm ml-3" type="submit">Save</button>
         <button class="btn btn-danger btn-sm ml-2" type="reset" onclick="$('image_preview0').attr('src','')">Cancel</button>
     </div>
-    
+
+    <?php
+    } // end if
+    ?>
+    <fieldset <?= ($is_owner) ? "" : "disabled"; ?>>
     <input type="hidden" name="gift_id" value="<?= $gift_id ?>" />
     <input type="hidden" name="list_id" value="<?= $list_id; ?>" />
     <div class="mt-3 row">
@@ -38,7 +46,7 @@
             <div class="form-group row">
                 <label class="col-3 text-right" for="ranking<?= $gift_id; ?>">Ranking:</label>
                 <div class="col-7">
-                    <input class="star_ranking rating-loading" type="text" name="ranking" id="ranking<?= $gift_id; ?>" value="<?= $ranking; ?>" required />
+                    <input class="star_ranking rating-loading" type="text" name="ranking" id="ranking<?= $gift_id; ?>" value="<?= $ranking; ?>" required <?= ($is_owner) ? "" : "data-display-only='true'"; ?> />
                 </div>
             </div>
 
@@ -65,14 +73,22 @@
         </div>
 
         <div class="col-3">
+            <?php
+            if($is_owner)
+            {
+            ?>
             <label for="image0">Select image:</label>
             <input class="form-control form-control-sm" type="file" name="image" id="image<?= $gift_id; ?>" onchange="readURL(this, 'image_preview<?= $gift_id; ?>')" accept="image/*" />
             <hr class="my-2">
+            <?php
+            } // end if
+            ?>
             <p class="m-0 mb-1">Image preview: </p>
             <img class="mx-auto border" src="/giftlist/<?= $gift_image."?d=".date("YmdHis"); ?>" id="image_preview<?= $gift_id; ?>" height="200" width="140">
         </div>
         
-        
+    
     </div>
+    </fieldset>
 
 </form>

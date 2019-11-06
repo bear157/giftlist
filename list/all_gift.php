@@ -31,7 +31,7 @@
             <td class="align-middle"><input class="star_ranking rating-loading" type="text" value="<?= $ranking; ?>" data-hover-enabled="false" data-display-only="true" /></td>
             <td class="align-middle">
                 <div class="d-flex">
-                    <img src="/giftlist/<?= $gift_image."?d=".date("YmdHis"); ?>" width="60" height="60">
+                    <img class="border" src="/giftlist/<?= $gift_image."?d=".date("YmdHis"); ?>" width="60" height="60">
                     <div class="ml-3">
                         <?= $gift_name; ?>
                         <br>
